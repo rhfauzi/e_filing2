@@ -1,0 +1,95 @@
+.ukuran0{
+    width:5%;
+    height:30px;
+}
+
+.ukuran1{
+    width:10%;
+    height:30px;
+}
+
+.ukuran2{
+    width:20%;
+    height:30px;
+}
+
+.ukuran3{
+    width:30%;
+    height:30px;
+}
+
+.ukuran4{
+    width:40%;
+    height:30px;
+}
+
+.ukuran5{
+    width:50%;
+    height:30px;
+}
+
+.ukuran6{
+    width:60%;
+    height:30px;
+}
+
+.ukuran7{
+    width:70%;
+    height:30px;
+}
+
+.ukuran8{
+    width:80%;
+    height:30px;
+}
+
+.ukuran9{
+    width:90%;
+    height:30px;
+}
+
+.ukuran10{
+    width:100%;
+    height:30px;
+}
+
+.ket{
+    color: #08088A;
+    font-style: italic;
+    font-size: 12px;
+}
+
+.ketmenu{
+    color: #08088A;
+    font-style: italic;
+    font-family: cursive;
+}
+
+.gelap{
+    background-color: #DDDDDD;
+}
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
