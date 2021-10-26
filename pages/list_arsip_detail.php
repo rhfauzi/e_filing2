@@ -27,7 +27,20 @@ if($param2 == 'alert')
 }
 //----------------------------------------------------------------------------------------------
 
-    $QueInfo	=	mssql_fetch_assoc(mssql_query("".$func_que_arsip." AND kd_arsip = '".$kd_arsip."'"));
+$queryDataNew = "SELECT
+mslokasi.kd_lokasi,
+mslokasi.lokasi,
+msrak.kd_rak,
+arsip.*
+FROM
+arsip
+LEFT JOIN msbox ON arsip.kd_box = msbox.kd_box 
+LEFT JOIN msrak ON msrak.kd_rak = msbox.kd_rak 
+LEFT JOIN mslokasi ON mslokasi.kd_lokasi = msrak.kd_lokasi
+WHERE (ARSIP.saveHardcopy = 1 AND ARSIP.kd_box != '') OR (ARSIP.saveHardcopy = 0 OR ARSIP.saveHardcopy IS NULL)";
+
+    $QueInfo	=	mssql_fetch_assoc(mssql_query("".$queryDataNew." AND kd_arsip = '".$kd_arsip."' ORDER BY id_arsip DESC"));
+    // $QueInfo	=	mssql_fetch_assoc(mssql_query("".$func_que_arsip." AND kd_arsip = '".$kd_arsip."'")); script awal
 
 
 ?>
@@ -152,6 +165,10 @@ if(file_exists("../PENGARSIPAN/ArchiveScanKodak_i3450/".$resCek['docFileName']))
 else if(file_exists("../PENGARSIPAN//ArchiveScan/".$resCek['docFileName']))
 {
     $vPath = "http://192.168.14.97/PENGARSIPAN/ArchiveScan/".$resCek['docFileName'];
+}
+else if(file_exists("../PENGARSIPAN V2/".$resCek['docLocation']."/".$resCek['docFileName']))
+{
+    $vPath = "http://192.168.13.37/PENGARSIPAN V2/".$resCek['docLocation']."/".$resCek['docFileName'];
 }else{
     $vPath = "null";
 }

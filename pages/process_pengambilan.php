@@ -17,7 +17,8 @@
     $edc        = new encdec();
 
     // 1 = superAdmin, 2 = pic , 3 = approver spv, 4 = aprover manager, 5= approver GM, 6 = viewer , 7 =audit,8 = pic plus
-    $arr_group_viewer = array('6','7');
+    $arr_group_auditor = array('7');
+    $arr_group_viewer = array('6');
     $arr_group_editor = array('1','2','8');
     $arr_group_master = array('1','8'); 
 

@@ -9,7 +9,7 @@
             $defindex = "main.php?";
             $defparam = "mid=";
             $sesi     = $_SESSION['iduser'];
-            //$sesi     = '408';
+            // $sesi     = '408';
             $edc        = new encdec();
 
             $superadmin = mssql_fetch_assoc(mssql_query("SELECT * FROM usermenu WHERE iduser = '".$sesi."'"));

@@ -109,10 +109,10 @@ function showmodal(){
 		<select id='kd_kategori' name="kd_kategori" class="form-control ukuran8">
 		<option value='0'>Semua Kategori</option>
 		<?php
-		$sqlkategori = mssql_query("SELECT distinct kd_kategori FROM arsip where kd_kategori != ''");
+		$sqlkategori = mssql_query("SELECT * FROM mskategori");
 		while($reskat = mssql_fetch_assoc($sqlkategori)){
 			echo"
-				<option value='".$reskat['kd_kategori']."'>".$reskat['kd_kategori']."</option>
+				<option value='".$reskat['kategori']."'>".$reskat['kategori']."</option>
 			";
 		}
 		?>
@@ -132,10 +132,10 @@ function showmodal(){
 		<select id='kd_uker' name="kd_uker" class="form-control ukuran8">
 		<option value='0'>Semua Unitkerja</option>
 		<?php
-		$sqlkategori = mssql_query("SELECT distinct kd_uker FROM arsip");
+		$sqlkategori = mssql_query("SELECT * FROM MSUKER");
 		while($reskat = mssql_fetch_assoc($sqlkategori)){
 			echo"
-				<option value='".$reskat['kd_uker']."'>".$reskat['kd_uker']."</option>
+				<option value='".$reskat['KodeUnit']."'>".$reskat['UnitKerja']."</option>
 			";
 		}
 		?>

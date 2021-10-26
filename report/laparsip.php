@@ -128,7 +128,8 @@
 	$Que = "SELECT * FROM(".$QueMain.") as x WHERE row > $posisi and row <= $batas order by x.id_arsip asc";
 
 	// echo "<br><br>";
-	//echo $Que;
+	//echo $QueMain;
+
 	$Sql	=	mssql_query($Que);
 
 ?>

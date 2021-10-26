@@ -1,5 +1,5 @@
-<!-- ditambahkan jquery 1.4 disini karena kalau ditaruh di main gak jalan, gak tau kenapa -->
-<script type="text/javascript" src="js/jquery-1.4.js"></script> 
+<!-- ditambahkan jquery 1.4 disini karena kalau ditaruh di main gak jalan -->
+<!-- <script type="text/javascript" src="js/jquery-1.4.js"></script>  -->
 <?php
 require 'function/seqno.php';
 ?>
@@ -126,7 +126,7 @@ if($param1 == 'alert')
 <div><i class="ketmenu">Management <i class="fa fa-arrow-right"></i>&nbsp; Pengalokasian</i></div><br>
 <?php
 	$noScan = $isiParam1;
-	$queGetScanData = mssql_query("SELECT convert(date,createdDate) as dateCreateed,* FROM arsip_scan WHERE scanNo ='".$noScan."'");
+	$queGetScanData = mssql_query("SELECT convert(date,createdDate) as dateCreated,* FROM arsip_scan WHERE scanNo ='".$noScan."'");
 	$resScanData = mssql_fetch_assoc($queGetScanData);
 ?>
 <table width="100%" border="0px">
@@ -143,8 +143,8 @@ if($param1 == 'alert')
 		<td width="25%">&nbsp;Tanggal Scan</td>
 		<td width="25%">
 			<?php 
-				echo "<b>:&nbsp;<i style='color:#999'><u>".$resScanData['createdDate']."</u></i></b>";
-				echo "<input type='hidden' id='crdate' value='".$resScanData['dateCreateed']."'>";
+				echo "<b>:&nbsp;<i style='color:#999'><u>".$resScanData['dateCreated']."</u></i></b>";
+				echo "<input type='hidden' id='crdate' value='".$resScanData['dateCreated']."'>";
 			?>
 		</td>
 	</tr>
@@ -322,8 +322,8 @@ if($param1 == 'alert')
                     $no=1;
                     if (mssql_num_rows($query)) {
                         while ($data    =   mssql_fetch_assoc($query)) {
-                            $kd_lokasi  =   $data[kd_lokasi];
-                            $lokasi  	=   $data[lokasi];
+                            $kd_lokasi  =   $data['kd_lokasi'];
+                            $lokasi  	=   $data['lokasi'];
                             
                 ?>
                     <td width="10%" align="center"><? echo $no; ?></td>

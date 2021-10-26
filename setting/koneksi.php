@@ -9,18 +9,10 @@ function conDB($srv,$db)
 
 	 if($srv ==	".")//local
 	 {
-		mssql_select_db($db, mssql_connect('', '', ''));
+		mssql_select_db($db, mssql_connect('192.168.14.30', 'dev-brinsave', 'BR1@21sav3'));
 	 }
-	 elseif($srv == "30")//server dev
-	 {
-		mssql_select_db($db, mssql_connect('', '', ''));
-	 }
-	 else if($srv == "52")//server live
-	 {
-		mssql_select_db($db, mssql_connect('', '', ''));
 	
-	 }
-	 
+
 	 $result = mssql_query("SET ANSI_NULLS ON;");
 	 $result = mssql_query("SET ANSI_WARNINGS ON;");
 }

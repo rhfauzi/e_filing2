@@ -2,7 +2,7 @@
   session_start();
   require('setting/koneksi.php');
   require('function/encdec.php');
-  conDB('.','aplikasi');
+  conDB('.','e_filing');
 
   $enc   =  new encdec();
 
@@ -19,7 +19,7 @@
   $superadmin = mssql_fetch_assoc(mssql_query("SELECT * FROM e_filing.dbo.usermenu WHERE iduser = '".$cekiduser['id_pegawai']."'"));
 	
 	if($superadmin['groupmenu'] == '1'){ //jika yang login super admin
-	$StrLogin   = "SELECT * FROM user_aplikasi WHERE usernamePegawai ='".$user."' AND pass_pegawai = '".$hasil_encrypt."'";
+	$StrLogin   = "SELECT * FROM user_aplikasi WHERE usernamePegawai ='".$user."'";
   
 	}else{
 	// $StrLogin   = "SELECT a.* FROM user_aplikasi a,e_filing.dbo.usermenu b  

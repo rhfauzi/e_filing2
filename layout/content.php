@@ -1,7 +1,7 @@
 <br><br>
 <?php
 // error_reporting(0);
-// session_start();
+session_start();
 
 //===== get url encrypted secure ==========
 

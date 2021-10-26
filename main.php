@@ -13,6 +13,8 @@ require('function/encdec.php');
 conDB('.','e_filing');
 // session_start();
 $userlogin =  $_SESSION['iduser'];
+// $userlogin = '408';
+
 
 if($userlogin == ''){
   header("location:../apps/auth");
@@ -28,8 +30,17 @@ $kode_uker  = $userInfo['kode_uker']; //AMBIL DARI TABLE USERMENU
 $nm_pegawai = $userInfo['nm_pegawai'];
 $id_pegawai = $userInfo['id_pegawai'];
 
+// echo "<br>groupdesc=".$groupdesc;
+// echo "<br>level=".$level;
+// echo "<br>kodeunit=".$kodeunit;
+// echo "<br>unitkerja=".$unitkerja;//AMBIL DARI SIMSDM
+// echo "<br>kode_uker=".$kode_uker; //AMBIL DARI TABLE USERMENU
+// echo "<br>nm_pegawai=".$nm_pegawai;
+// echo "<br>id_pegawai=".$id_pegawai;
+
 // 1 = superAdmin, 2 = pic , 3 = approver spv, 4 = aprover manager, 5= approver GM, 6 = viewer , 7 =audit,8 = pic plus
-$arr_group_viewer = array('6','7');
+$arr_group_auditor = array('7');
+$arr_group_viewer = array('6');
 $arr_group_editor = array('1','2','8');
 $arr_group_master = array('1','8');
 
@@ -55,7 +66,7 @@ $func_count_box     = countque_tbbox();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>E-Filing</title>
+    <title>BRINSAVE</title>
     <link href="images/favicon.png" rel="shortcut icon">
 
     <!-- Bootstrap Core CSS -->
@@ -88,8 +99,6 @@ $func_count_box     = countque_tbbox();
 
 
     <!-- untuk tanggal -->
-    <script type="text/javascript" src="js/ui.datepicker.js"></script>
-    <script type="text/javascript" src="js/ui.core.js"></script>
     <link type="text/css" href="dist/css/base/ui.all.css" rel="stylesheet" />
 
 
@@ -155,6 +164,10 @@ $func_count_box     = countque_tbbox();
    <!-- jQuery -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/jquery/jquery.js"></script>
+
+    <!-- for date -->
+    <script type="text/javascript" src="js/ui.datepicker.js"></script>
+    <script type="text/javascript" src="js/ui.core.js"></script>
 
 
     <!-- tambahan-->

@@ -56,23 +56,27 @@ $resCek = mssql_fetch_assoc(mssql_query($queCek));
 if($resCek['docFileName'] != " "){
 
 
-//$vPath = "http://192.168.14.97/PENGARSIPAN/ArchiveScan/".$resCek['docFileName'];
+//$vPath = "http://192.168.13.37/PENGARSIPAN/ArchiveScan/".$resCek['docFileName'];
 
 $path = $resCek['docLocation'];
 $folderName = explode("\\",$path);
 //echo $folderName[count($folderName)-1];
 
 
-//$vPath = "http://192.168.14.97/PENGARSIPAN/".$folderName[count($folderName)-1]."/".$resCek['docFileName'];
-//$vPath = "http://192.168.14.97/PENGARSIPAN/ArchiveScanKodak_i3450/".$resCek['docFileName'];
+//$vPath = "http://192.168.13.37/PENGARSIPAN/".$folderName[count($folderName)-1]."/".$resCek['docFileName'];
+//$vPath = "http://192.168.13.37/PENGARSIPAN/ArchiveScanKodak_i3450/".$resCek['docFileName'];
 
 if(file_exists("../PENGARSIPAN/ArchiveScanKodak_i3450/".$resCek['docFileName']))
 {
-    $vPath = "http://192.168.14.97/PENGARSIPAN/ArchiveScanKodak_i3450/".$resCek['docFileName'];
+    $vPath = "http://192.168.13.37/PENGARSIPAN/ArchiveScanKodak_i3450/".$resCek['docFileName'];
 }
 else if(file_exists("../PENGARSIPAN//ArchiveScan/".$resCek['docFileName']))
 {
-    $vPath = "http://192.168.14.97/PENGARSIPAN/ArchiveScan/".$resCek['docFileName'];
+    $vPath = "http://192.168.13.37/PENGARSIPAN/ArchiveScan/".$resCek['docFileName'];
+}
+else if(file_exists("../PENGARSIPAN V2/".$resCek['docLocation']."/".$resCek['docFileName']))
+{
+    $vPath = "http://192.168.13.37/PENGARSIPAN V2/".$resCek['docLocation']."/".$resCek['docFileName'];
 }else{
     $vPath = "null";
 }

@@ -64,7 +64,7 @@ $_SESSION['iduser'] = $_GET['ref'];
 
 <head>
 	<meta http-equiv="refresh" content="0;url=main.php">
-	<title>A3KOL SYARIAH</title>
+	<title>E_FILING</title>
 	<script language="javascript">
 		window.location.href = "main.php";
 	</script>

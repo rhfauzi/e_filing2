@@ -22,7 +22,7 @@
 // storing  request (ie, get/post) global array to a variable  
 $requestData = $_POST;
 
-$func_que_arsip     = mainque_tbarsip();
+//$func_que_arsip     = mainque_tbarsip();
 
 
 $columns = array( 

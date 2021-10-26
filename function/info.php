@@ -28,7 +28,7 @@ function sendsms($nomor,$pesan){
 function infolog($iduser){
 
 $Que = mssql_fetch_assoc(mssql_query("SELECT TOP 1 a.*, b.id_pegawai,b.nm_pegawai,b.KodeUnit,c.UnitKerja,d.groupdeskripsi 
-                                        FROM usermenu a, aplikasi.dbo.user_aplikasi b ,SIMSDM.dbo.MUnitkerja c,groupbsam d
+                                        FROM usermenu a, user_aplikasi b ,msuker c,groupbsam d
                                         WHERE a.iduser = b.id_pegawai 
                                         AND b.KodeUnit = c.KodeUnit 
                                         AND a.groupmenu = d.groupmenu
@@ -47,7 +47,7 @@ return $res;
 
 
 function infouser($iduser){
-    $Que = mssql_fetch_assoc(mssql_query("SELECT * FROM aplikasi.dbo.user_aplikasi WHERE id_pegawai = '".$iduser."'"));
+    $Que = mssql_fetch_assoc(mssql_query("SELECT * FROM user_aplikasi WHERE id_pegawai = '".$iduser."'"));
 
     $res = $Que['usernamePegawai'];
 

@@ -51,22 +51,19 @@ $(document).ready(function() {
 <body>
 <br>
 <?php
-//------------------------------------------- ALERT MESSAGE ------------------------------------ 
+//------------------------------------------- ALERT MESSAGE ------------------------------------	
 if($param1 == 'alert')
-{ 
+{	
 	if($isiParam1 == '1'){
 	?>
 		<div class="alert alert-success alert-dismissable">
 			<button type="button" class="close" data-dismiss="alert">x</button>
-			<strong>SUCCESS !</strong> Data berhasil <?php echo $isiParam2; ?>.
-			<?php
-			if($isiParam2 == 'dialokasikan'){
-				echo "Silakan Lihat pada menu";
-
-            	$url    = "mid=listarsip";
-            	$urlEnc = $edc->encrypt($url,true);
-            	echo "<a href='main.php?".$urlEnc."'>Data Arsip</a>";
-			}
+			<strong>SUCCESS !</strong> Data berhasil <?php echo $isiParam2; ?>. 
+            Silakan Lihat pada menu 
+            <?php
+            $url    = "mid=listarsip";
+            $urlEnc = $edc->encrypt($url,true);
+            echo "<a href='main.php?".$urlEnc."'>Data Arsip</a>";
             ?>
 		</div>
 	<?php
@@ -90,25 +87,23 @@ if($param1 == 'alert')
 <?php
     $url = "mid=formlokmulti";
     $urlEnc = $edc->encrypt($url,true);
-	$urlSearch = "mid=alocated";
-    $urlEncSearh = $edc->encrypt($urlSearch,true);
 ?>
 <div class="dataTables_filter formsrc">
-<form action="<?php echo 'main.php?'.$urlEncSearh;?>" method="POST">
-		<label style="display: inline-flex;">
-				<input type="search" class="form-control input-sm" placeholder="" aria-controls="DataArsip" style="width: 250px" name="search" value="<?php if(isset($_POST['search'])){ echo $_POST['search']; } ?>">
-		</label>
-		<input type="submit" class="btn btn-primary" value="Search">
-</form>
+    <form action="main.php?mid=alocated" method="POST">
+        <label style="display: inline-flex;">
+            <input type="search" class="form-control input-sm" placeholder="" aria-controls="DataArsip" style="width: 250px" name="search" value="<?php if(isset($_POST['search'])){ echo $_POST['search']; } ?>">
+        </label>
+        <input type="submit" class="btnok" value="Search">
+    </form>
 </div>
 <form name="form_scan" method="post" action="<?php echo 'main.php?'.$urlEnc;?>" enctype='multipart/form-data'>
-<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example4"> 
+<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example4 DataArsip"> 
 	<thead> 
 		<?php
 		if(in_array($level,$arr_group_editor)){
 		?>
 		<tr>
-			<td colspan="8">
+			<td colspan="7">
 				<table border="0px" width="100%">
 				<tr>
 					<td width='8%'>action check</td>
@@ -120,7 +115,8 @@ if($param1 == 'alert')
 						<option value='2'>UnCheck Semua</option>
 					</select>
 					</td>
-					<td width="50%"></td>
+					<td width="50%">
+                    </td>
 					<td width="13%" align="right">
 						<input class="btn btn-primary" type=submit title='proses ini akan mengeksekusi data yang terceklist' value='Proses Terpilih' id='actBtn' name="actBtn">
 					</td>
@@ -135,8 +131,7 @@ if($param1 == 'alert')
 			<th width="5%">No</th> 
 			<th width="10%">No Scan</th>
             <th width="15%">Nama File</th>
-			<th width="8%">Kode Uker</th>
-            <th width="5%">Jml Hal</th>
+            <th width="8%">Jml Hal</th>
 			<th width="30%">Keterangan</th>
             <th width="10%">Tgl Scan</th>
 			<?php if(in_array($level,$arr_group_editor)){?>
@@ -146,30 +141,19 @@ if($param1 == 'alert')
 	</thead>
 	<tbody>
 		<?php
-			//file awal brins
+        if(isset($_POST['search'])){
+			$sql = mssql_query("SELECT * FROM arsip_scan 
+            where scanNo not in (select no_scan from arsip where no_scan is not null) AND (
+                scanNo LIKE '%".$_POST['search']."%'
+                OR docFileName LIKE '%".$_POST['search']."%'
+                OR isi_index2 LIKE '%".$_POST['search']."%'
+                OR fileContent LIKE '%".$_POST['search']."%'
+            )
+            order by id desc");
+        }else{
 			// $sql = mssql_query("SELECT * FROM arsip_scan where scanNo not in (select no_scan from arsip where no_scan is not null) order by id desc");
-
-			if(in_array($level,$arr_group_viewer)){
-				$filterUker = " AND Unitkerja = '".$kode_uker."'";
-			}else{
-				$filterUker = "";
-			}
-
-			if(isset($_POST['search'])){
-				$cari = $_POST['search'];
-				$filterSearch = " AND docFileName like '%$cari%' 
-								OR docFileName LIKE '%$cari%'
-                				OR isi_index2 LIKE '%$cari%'
-                				OR fileContent LIKE '%$cari%'";
-			}
-
-			$query = "SELECT scanNo,docFileName,unitkerja,docPageCount,isi_index2,createdDate
-					FROM arsip_scan WHERE scanNo NOT IN (select no_scan from arsip where no_scan is not null)
-					$filterUker
-					$filterSearch
-					ORDER BY id DESC";
-			$sql = mssql_query($query);
-
+			$sql = mssql_query("SELECT scanNo,docFileName,unitKerja,docPageCount,isi_index2,createdDate,kategori FROM arsip_scan where scanNo not in (select no_scan from arsip where no_scan is not null) order by id desc");
+        }
 			$no = 1;
 			while($res = mssql_fetch_assoc($sql)){
 
@@ -188,20 +172,17 @@ if($param1 == 'alert')
 									<img src='images/detail.png' width='10%'>".$res['docFileName']."
 								</a>";
 
-				$url    = "mid=formlok&scanNo=".$res['scanNo'];
 				$urlEnc = $edc->encrypt($url,true); 
+				$urlEnc = $url; 
 				$located  = "<a style='text-decoration:none;' href='main.php?".$urlEnc."'>
 				<input class='btn btn-info btn-xs locate_button'  type=button value='ALOKASIKAN'></a>";
-				$queUker = "SELECT KodeUnit,Unitkerja FROM MSUKER WHERE KODEUNIT = '".$res['unitkerja']."'";
-				$getUkername  = mssql_fetch_assoc(mssql_query($queUker));
 
 				echo"
 				<tr>
 				<td>".$no." ".$cekBox."</td>
 				<td><input type='hidden' name='scanno_$no' value='".$res['scanNo']."'>".$res['scanNo']."</td>
 				<td><input type='hidden' name='docname_$no' value='".$res['docFileName']."'>".$docFileName."</td>
-				<td>".$getUkername['Unitkerja']."</td>
-				<td align='center'><input type='hidden' name='uker_$no' value='".$res['unitkerja']."'>".$res['docPageCount']."</td>
+				<td align='center'><input type='hidden' name='uker_$no' value='".$res['unitKerja']."'>".$res['docPageCount']."</td>
 				<td>".$res['isi_index2']."</td>
 				<td><input type='hidden' name='crdate_$no' value='".$res['createdDate']."'>".$res['createdDate']."</td>
 				";
@@ -234,5 +215,4 @@ if($param1 == 'alert')
 
 
 </body>
-
 </html>

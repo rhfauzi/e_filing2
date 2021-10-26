@@ -1,19 +1,20 @@
 <?php
 include "../setting/koneksi.php";
 include "../function/changeformat.php";
+include "../function/cheq.php";
 conDB('.','e_filing');
 
 
-function mainque_tbarsip(){
+// function mainque_tbarsip(){
 
-$cheq = "SELECT mslokasi.kd_lokasi,mslokasi.lokasi,msrak.kd_rak,arsip.* from 
-		arsip, msbox, msrak,mslokasi
-		where mslokasi.kd_lokasi = msrak.kd_lokasi
-		and msrak.kd_rak = msbox.kd_rak
-		and msbox.kd_box = arsip.kd_box";
+// $cheq = "SELECT mslokasi.kd_lokasi,mslokasi.lokasi,msrak.kd_rak,arsip.* from 
+// 		arsip, msbox, msrak,mslokasi
+// 		where mslokasi.kd_lokasi = msrak.kd_lokasi
+// 		and msrak.kd_rak = msbox.kd_rak
+// 		and msbox.kd_box = arsip.kd_box";
 
-return $cheq;
-}
+// return $cheq;
+// }
 //$uker  = tb_unitkerja();
 
 	if($kd_kategori == '0'){$fkategori = ""; $ikategori = "Semua Kategori";}

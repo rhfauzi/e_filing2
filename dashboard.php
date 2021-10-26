@@ -1,5 +1,5 @@
-<script src="scripts/jquery.min.js" type="text/javascript"></script>
-<script src="scripts/highcharts.js" type="text/javascript"></script>
+<!-- <script src="scripts/jquery.min.js" type="text/javascript"></script>
+<script src="scripts/highcharts.js" type="text/javascript"></script> -->
  
 
 <!-- <style type="text/css">

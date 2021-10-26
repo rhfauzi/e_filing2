@@ -8,6 +8,11 @@ session_start();
 
 $edc = new encdec();
 
+$arr_group_auditor = array('7');
+$arr_group_viewer = array('6');
+$arr_group_editor = array('1','2','8');
+$arr_group_master = array('1','8');
+
 
 if($_POST['aksi']=='tampil'){
 
@@ -32,14 +37,47 @@ $keyword = $_POST['test'];
 			}
 			//---------------------------------------------
 
-			// $QueMain = "SELECT *,ROW_NUMBER() over(order by id_arsip desc) as row 
-			// 			FROM arsip 
-			// 			WHERE kd_arsip like '%".$keyword."%' or nama_arsip like '%".$keyword."%' or deskripsi like '%".$keyword."%' or tags like '%".$keyword."%'";
+			if(in_array($level,$arr_group_editor)){
+				$filterUkerSearch = " WHERE unitkerja = '".$kode_uker."'";
+            }else{
+				$filterUkerSearch = "";
+			}
 
-			$QueMain = "SELECT a.*,b.*,ROW_NUMBER() over (order by id_arsip desc) as row
-						FROM arsip a,arsip_scan b
-						WHERE a.no_scan = b.scanNo
-						AND b.fileContent like '%".$keyword."%'";
+			$QueMain = "SELECT *,ROW_NUMBER() over (order by id_arsip desc) as row FROM
+						(
+						SELECT
+						a.id_arsip,a.kd_arsip,a.kd_uker,a.nama_arsip,a.tgl_masuk,
+						b.unitkerja,b.scanNo,b.index1,b.isi_index1,b.index2,b.isi_index2,b.index3,b.isi_index3
+						FROM arsip a WITH(NOLOCK) 
+						RIGHT JOIN arsip_scan b WITH(NOLOCK)
+						ON a.no_scan = b.scanNo
+						WHERE A.nama_arsip like '%".$keyword."%'
+						UNION
+						SELECT 
+						a.id_arsip,a.kd_arsip,a.kd_uker,a.nama_arsip,a.tgl_masuk,
+						b.unitkerja,b.scanNo,b.index1,b.isi_index1,b.index2,b.isi_index2,b.index3,b.isi_index3
+						FROM arsip a WITH(NOLOCK) 
+						RIGHT JOIN arsip_scan b WITH(NOLOCK)
+						ON a.no_scan = b.scanNo
+						WHERE b.fileContent like '%".$keyword."%'
+						UNION
+						SELECT 
+						a.id_arsip,a.kd_arsip,a.kd_uker,a.nama_arsip,a.tgl_masuk,
+						b.unitkerja,b.scanNo,b.index1,b.isi_index1,b.index2,b.isi_index2,b.index3,b.isi_index3
+						FROM arsip a WITH(NOLOCK) 
+						RIGHT JOIN arsip_scan b WITH(NOLOCK)
+						ON a.no_scan = b.scanNo
+						WHERE a.kd_arsip = '".$keyword."'
+						UNION
+						SELECT 
+						a.id_arsip,a.kd_arsip,a.kd_uker,a.nama_arsip,a.tgl_masuk,
+						b.unitkerja,b.scanNo,b.index1,b.isi_index1,b.index2,b.isi_index2,b.index3,b.isi_index3
+						FROM arsip a WITH(NOLOCK) 
+						RIGHT JOIN arsip_scan b WITH(NOLOCK)
+						ON a.no_scan = b.scanNo
+						WHERE a.no_scan = '".$keyword."'
+						)AS z
+						$filterUkerSearch";
 
 			$QueRow     = "SELECT * FROM($QueMain) as x 
 							WHERE row > $posisi and row <= $batas
@@ -55,7 +93,7 @@ $keyword = $_POST['test'];
 					$urlFile 		= "mid=listarsip_detail&kd_arsip=".$res['kd_arsip'];
 					$urlDetailFile 	= $edc->encrypt($urlFile,true);
 
-					echo "<font style='color:#1a39b3;font-size:18px'><a href='main.php?".$urlDetailFile."' style='color:#1a39b3;'>".$res['row']."). ".$res['kd_arsip']."</a></font>";
+					echo "<font style='color:#1a39b3;font-size:18px'><a href='main.php?".$urlDetailFile."' style='color:#1a39b3;'>".$res['row'].").Arsip Code : ".$res['kd_arsip']." | Scan No : ".$res['scanNo']." | ".$res['unitkerja']."</a></font>";
 					echo "<br>";
 					echo "<font style='color:#10702f;'>".$res['kd_uker']."-".$res['tgl_masuk']."</font>";
 					echo "<br>";

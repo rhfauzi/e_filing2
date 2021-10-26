@@ -32,6 +32,17 @@
 $requestData = $_POST;
 
 $func_que_arsip     = mainque_tbarsip();
+$func_que_arsip_new = "SELECT
+mslokasi.kd_lokasi,
+mslokasi.lokasi,
+msrak.kd_rak,
+arsip.*
+FROM
+arsip
+LEFT JOIN msbox ON arsip.kd_box = msbox.kd_box 
+LEFT JOIN msrak ON msrak.kd_rak = msbox.kd_rak 
+LEFT JOIN mslokasi ON mslokasi.kd_lokasi = msrak.kd_lokasi
+WHERE (ARSIP.saveHardcopy = 1 AND ARSIP.kd_box != '') OR (ARSIP.saveHardcopy = 0 OR ARSIP.saveHardcopy IS NULL)";
 
 $columns = array( 
     0 => 'id_arsip',
@@ -50,9 +61,9 @@ $length     = $requestData['length'];
 
 if($level == '6') //LEVEL PIC UNITKERJA
 {
-    $queryData = $func_que_arsip." AND kd_uker = '".$kode_uker."'";
+    $queryData = $func_que_arsip_new." AND kd_uker = '".$kode_uker."'";
 }else{
-    $queryData = $func_que_arsip;
+    $queryData = $func_que_arsip_new;
 }
 
 // echo $queryData."<br>".$level."<br>";
@@ -67,11 +78,26 @@ $totalFiltered  = $totalData;
 
 
 if( !empty($requestData['search']['value'])) {
-    
+    $func_que_arsip_search = "SELECT
+	mslokasi.kd_lokasi,
+	mslokasi.lokasi,
+	msrak.kd_rak,
+	arsip.*,
+	ARSIP_SCAN.docFileName,
+	ARSIP_SCAN.isi_index2,
+	ARSIP_SCAN.fileContent
+	FROM
+	arsip
+	LEFT JOIN msbox ON arsip.kd_box = msbox.kd_box 
+	LEFT JOIN msrak ON msrak.kd_rak = msbox.kd_rak 
+	LEFT JOIN mslokasi ON mslokasi.kd_lokasi = msrak.kd_lokasi
+	LEFT JOIN ARSIP_SCAN ON ARSIP.no_scan = ARSIP_SCAN.scanNo
+	WHERE (ARSIP.saveHardcopy = 1 AND ARSIP.kd_box != '') OR (ARSIP.saveHardcopy = 0 OR ARSIP.saveHardcopy IS NULL)";
+
     if($level == '6'){ //LEVEL PIC UNITKERJA
-        $queryDataSearch = $func_que_arsip." AND kd_uker = '".$kode_uker."'";
+        $queryDataSearch = $func_que_arsip_search." AND kd_uker = '".$kode_uker."'";
     }else{
-        $queryDataSearch = $func_que_arsip;
+        $queryDataSearch = $func_que_arsip_search;
     }
 
     // if there is a search parameter
@@ -85,7 +111,10 @@ if( !empty($requestData['search']['value'])) {
                     OR kd_lokasi LIKE '%".$requestData['search']['value']."%'
                     OR kd_rak LIKE '%".$requestData['search']['value']."%'
                     OR kd_box LIKE '%".$requestData['search']['value']."%'
-                    OR kd_uker LIKE '%".$requestData['search']['value']."%'
+                    OR kd_uker LIKE '%".$requestData['search']['value']."%' 
+                    OR docFileName LIKE '%".$requestData['search']['value']."%'
+                    OR isi_index2 LIKE '%".$requestData['search']['value']."%'
+                    OR fileContent LIKE '%".$requestData['search']['value']."%'
                 )
             ";
 

@@ -15,18 +15,39 @@ $cek = mssql_num_rows(mssql_query("SELECT * FROM $table WHERE $field ='".$isi."'
 return $cek;
 }
 
-function mainque_tbarsip(){
+function mainque_tbarsip_scan(){
 
-$cheq = "SELECT mslokasi.kd_lokasi,mslokasi.lokasi,msrak.kd_rak,arsip.* from 
-		arsip, msbox, msrak,mslokasi
-		where mslokasi.kd_lokasi = msrak.kd_lokasi
-		and msrak.kd_rak = msbox.kd_rak
-		and msbox.kd_box = arsip.kd_box";
-
-//$cheq = "SELECT * from arsip";
+	$cheq = "SELECT mslokasi.kd_lokasi,mslokasi.lokasi,msrak.kd_rak,arsip.* from 
+	arsip, msbox, msrak,mslokasi
+	where mslokasi.kd_lokasi = msrak.kd_lokasi
+	and msrak.kd_rak = msbox.kd_rak
+	and msbox.kd_box = arsip.kd_box";
 
 return $cheq;
 }
+
+function mainque_tbarsip(){
+
+	// $cheq = "SELECT mslokasi.kd_lokasi,mslokasi.lokasi,msrak.kd_rak,arsip.* from 
+	// arsip, msbox, msrak,mslokasi
+	// where mslokasi.kd_lokasi = msrak.kd_lokasi
+	// and msrak.kd_rak = msbox.kd_rak
+	// and msbox.kd_box = arsip.kd_box";
+
+	$cheq = "SELECT
+	mslokasi.kd_lokasi,
+	mslokasi.lokasi,
+	msrak.kd_rak,
+	arsip.*
+	FROM
+	arsip
+	LEFT JOIN msbox ON arsip.kd_box = msbox.kd_box 
+	LEFT JOIN msrak ON msrak.kd_rak = msbox.kd_rak 
+	LEFT JOIN mslokasi ON mslokasi.kd_lokasi = msrak.kd_lokasi";
+
+return $cheq;
+}
+
 
 function mainque_tbbox(){
 

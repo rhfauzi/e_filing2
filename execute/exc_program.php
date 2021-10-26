@@ -593,7 +593,6 @@ if($postact == 'addLocated'){
 
 
 $kd_box 		=	$_POST['kd_box'];
-$kd_kategori	=	$_POST['kategori'];
 $kd_uker 		=	$_POST['uker'];
 $createdDate    =	$_POST['crdate'];
 $arsip_file 	= 	$_POST['docname'];
@@ -601,7 +600,17 @@ $no_scan        =   $_POST['scan_no'];
 $namaLen 		=   strlen($arsip_file);
 $getNama 		=   $namaLen-4;
 $nama_arsip 	=   substr($arsip_file,0,$getNama);
-$deskripsi 		=   "scanned archive";
+
+$queScan = mssql_query("SELECT fileSource,kategori FROM arsip_scan where scanno = '".$no_scan."'");
+$sqlScan = mssql_fetch_assoc($queScan);
+
+if($sqlScan['fileSource'] == '1'){
+	$deskripsi 		=   "Upload Document";
+	$kd_kategori	=	$sqlScan['kategori'];
+}else{
+	$deskripsi 		=   "scanned archive";
+	$kd_kategori	=	$_POST['kategori'];
+}
 
 //$dateNow 		=   date('d/m/Y');
 $kd_arsip		=	arsipcode2();
@@ -627,7 +636,8 @@ $link_qrcode 	= $url.$hasil_encrypt."";
 									link_qrcode,
 									input_user,
 									input_date,
-									last_update)VALUES('$kd_arsip',
+									last_update,
+									savehardcopy)VALUES('$kd_arsip',
 														'$kd_box',
 														'$kd_kategori',
 														'$kd_uker',
@@ -641,7 +651,8 @@ $link_qrcode 	= $url.$hasil_encrypt."";
 														'$link_qrcode',
 														'$input_user',
 														'$input_date',
-														'$last_update')";
+														'$last_update',
+														'1')";
 
 
 		$ket   = $activity_add;
@@ -695,7 +706,6 @@ if($postact == 'add_multiLocated'){
 	$arsip_file 	= explode(',',$_POST['docname']);
 	$no_scan        = explode(',',$_POST['scan_no']);
 	
-	$deskripsi 		= "scanned archive";
 
 	for($x=1;$x<=$jmlcek;$x++){
 
@@ -713,6 +723,17 @@ if($postact == 'add_multiLocated'){
 
 		//$dateNow 		=   date('d/m/Y');
 		$kd_arsip		=	arsipcode2();
+
+		$queScan = mssql_query("SELECT fileSource,kategori FROM arsip_scan where scanno = '".$no_scan[$i]."'");
+		$sqlScan = mssql_fetch_assoc($queScan);
+
+		if($sqlScan['fileSource'] == '1'){
+			$deskripsi 		=   "Upload Document";
+			$kd_kategori	=	$sqlScan['kategori'];
+		}else{
+			$deskripsi 		=   "scanned archive";
+			$kd_kategori	=	$kd_kategori[$i];
+		}
 		
 		//---------------------------- untuk link qrcode --------------------------------
 		$ID     		= $kd_arsip;
@@ -735,9 +756,10 @@ if($postact == 'add_multiLocated'){
 											link_qrcode,
 											input_user,
 											input_date,
-											last_update)VALUES('$kd_arsip',
+											last_update,
+											savehardcopy)VALUES('$kd_arsip',
 																'$kd_box',
-																'$kd_kategori[$i]',
+																'$kd_kategori',
 																'$kd_uker[$i]',
 																'$nama_arsip',
 																'$deskripsi ',
@@ -749,7 +771,8 @@ if($postact == 'add_multiLocated'){
 																'$link_qrcode',
 																'$input_user',
 																'$input_date',
-																'$last_update')";
+																'$last_update',
+																'1')";
 		
 				$ket   = $activity_add;
 				$sql = mssql_query($query);
